@@ -6,3 +6,5 @@ Google Map APIを利用して計算をしているので、使用する場合は
 
 現状経由する地点は最大20地点としていますが、routing.js内のplusArea関数の2行目、area_num > 20 の20を変更すると最大地点数を変更できます。
 大きくするほど使用するメモリと時間がかかるので注意してください。
+
+Web上で実際に動かせるものはhttp://www.rhindcormo.com/portfolio/short_route.htmlにあります。
