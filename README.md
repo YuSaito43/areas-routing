@@ -1,6 +1,4 @@
 # areas-routing
-Calculate routes through multiple points
-
 複数地点を経由する経路を計算するプログラムです。
 
 Google Map APIを利用して計算をしているので、使用する場合はGoogle Map APIのアカウントとAPIキーを取得してください。
