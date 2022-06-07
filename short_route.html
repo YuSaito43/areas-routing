@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8">
+    <title>複数地点最短経路探索</title>
+    <meta name="description" content="複数地点を経由する際の最短の順路を探索します。">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://unpkg.com/sanitize.css">
+    <link rel="stylesheet" href="style_short_route.css">
+    <style type="text/css">
+        .noDisplay  {display: none;}
+    </style>
+    <script async defer
+      src="https://maps.googleapis.com/maps/api/js?key=YOURKEY">
+    </script>
+    <script type="text/javascript" src="routing.js"></script>
+  </head>
+
+  <body>
+    <h3>使い方</h3>
+      <p>
+        最大20か所の地点を周る最短経路を提案します。距離か時間で最短となる順路を計算します。<br>
+        移動方法は徒歩か車になっており、車の場合はオプションが2つあります。<br>
+        場所の名前には日本語の地名か住所を入力してください。また緯度経度を入力することも可能です。<br>
+        (緯度経度を利用する場合は、<font color="red">緯度,経度</font>で入力してください。Google Map等で調べられるものをそのまま入力してください。)<br>
+        入力が完了したら計算を押すと、名前を→で繋いで下に表示します。<br>
+        →をクリックするとその→を挟んでいる地点間の経路をGoogle Mapを利用して新規タブで開きます。<br>
+        6か所以上入力したい場合は場所追加ボタンを押すと入力欄が増えるので適宜利用してください。
+      </p>
+
+    <div class="how_container">
+        <span>検索方法</span>
+        <div id="how_start">
+            <input type="radio" name="how" id="start" onchange="changeHow('start')" checked="checked"> <label for="start">出発地点固定</label>
+        </div>
+        <div id="how_startend">
+            <input type="radio" name="how" id="startend" onchange="changeHow('startend')"> <label for="startend">出発地点と到達地点固定</label>
+        </div>
+        <div id="how_free">
+            <input type="radio" name="how" id="free" onchange="changeHow('free')"> <label for="free">固定地点無し</label>
+        </div>
+    </div>
+    <div class="mode_container">
+        <span>移動方法</span>
+        <div id="mode_walk">
+            <input type="radio" name="mode" id="walk" onchange="changeTravelMode('walk')" checked="checked"> <label for="walk">徒歩</label>
+        </div>
+        <div id="mode_car">
+            <input type="radio" name="mode" id="car" onchange="changeTravelMode('car')"> <label for="car">車</label>
+            <div class="car_down">
+                <span>時間指定</span>
+                <ul class="">
+                    <li class="item"><input type="radio" name="time" id="no" onchange="" checked="checked"><label for="no">指定なし</label></li>
+                    <li class="item"><input type="radio" name="time" id="current" onchange="" ><label for="current">現在時刻</label></li>
+                    <li class="item"><input type="radio" name="time" id="specify" onchange=""><label for="specify">指定時刻</label>
+                        <select id="hour">
+                            <option value="0">00</option>
+                            <option value="1">01</option>
+                            <option value="2">02</option>
+                            <option value="3">03</option>
+                            <option value="4">04</option>
+                            <option value="5">05</option>
+                            <option value="6">06</option>
+                            <option value="7">07</option>
+                            <option value="8">08</option>
+                            <option value="9">09</option>
+                            <option value="10">10</option>
+                            <option value="11">11</option>
+                            <option value="12">12</option>
+                            <option value="13">13</option>
+                            <option value="14">14</option>
+                            <option value="15">15</option>
+                            <option value="16">16</option>
+                            <option value="17">17</option>
+                            <option value="18">18</option>
+                            <option value="19">19</option>
+                            <option value="20">20</option>
+                            <option value="21">21</option>
+                            <option value="22">22</option>
+                            <option value="23">23</option>
+                        </select>
+                        ：
+                        <select id="minutes">
+                            <option value="0">00</option>
+							<option value="1">01</option>
+							<option value="2">02</option>
+							<option value="3">03</option>
+							<option value="4">04</option>
+							<option value="5">05</option>
+							<option value="6">06</option>
+							<option value="7">07</option>
+							<option value="8">08</option>
+							<option value="9">09</option>
+							<option value="10">10</option>
+							<option value="11">11</option>
+							<option value="12">12</option>
+							<option value="13">13</option>
+							<option value="14">14</option>
+							<option value="15">15</option>
+							<option value="16">16</option>
+							<option value="17">17</option>
+							<option value="18">18</option>
+							<option value="19">19</option>
+							<option value="20">20</option>
+							<option value="21">21</option>
+							<option value="22">22</option>
+							<option value="23">23</option>
+							<option value="24">24</option>
+							<option value="25">25</option>
+							<option value="26">26</option>
+							<option value="27">27</option>
+							<option value="28">28</option>
+							<option value="29">29</option>
+							<option value="30">30</option>
+							<option value="31">31</option>
+							<option value="32">32</option>
+							<option value="33">33</option>
+							<option value="34">34</option>
+							<option value="35">35</option>
+							<option value="36">36</option>
+							<option value="37">37</option>
+							<option value="38">38</option>
+							<option value="39">39</option>
+							<option value="40">40</option>
+							<option value="41">41</option>
+							<option value="42">42</option>
+							<option value="43">43</option>
+							<option value="44">44</option>
+							<option value="45">45</option>
+							<option value="46">46</option>
+							<option value="47">47</option>
+							<option value="48">48</option>
+							<option value="49">49</option>
+							<option value="50">50</option>
+							<option value="51">51</option>
+							<option value="52">52</option>
+							<option value="53">53</option>
+							<option value="54">54</option>
+							<option value="55">55</option>
+							<option value="56">56</option>
+							<option value="57">57</option>
+							<option value="58">58</option>
+							<option value="59">59</option>
+                        </select>
+                    </li>
+                </ul>
+                <span>高速の利用</span>
+                <ul class="highway_use">
+                    <li class="item"><input type="radio" name="highway" id="use" onchange="changeHighway('false')" checked="checked"><label for="use">利用する</label></li>
+                    <li class="item"><input type="radio" name="highway" id="nouse" onchange="changeHighway('true')"><label for="nouse">利用しない</label></li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="weight_container">
+        <span>計算対象</span>
+        <div id="weight_length">
+            <input type="radio" name="weight" id="length" onchange="changeWeight('length')" checked="checked"> <label for="length">距離</label>
+        </div>
+        <div id="weight_time">
+            <input type="radio" name="weight" id="time" onchange="changeWeight('time')"> <label for="time">時間</label>
+        </div>
+    </div>
+    <div class="startend_element">
+      <div class="inner_element" id="startPoint">
+          <span>出発地点:　</span>
+          <span><input type="text" id="startText"></span>
+      </div>
+
+      <div class="inner_element noDisplay" id="endPoint">
+          <span>到達地点:　</span>
+          <span><input type="text" id="endText"></span>
+      </div>
+    </div>
+
+    <div class="input_element" id="inputElement">
+      <div class="inner_element" id="area1">
+          <span>場所の名前:</span>
+          <span><input type="text" class="waypoint"></span>
+      </div>
+
+      <div class="inner_element" id="area2">
+          <span>場所の名前:</span>
+          <span><input type="text" class="waypoint"></span>
+      </div>
+
+      <div class="inner_element" id="area3">
+          <span>場所の名前:</span>
+          <span><input type="text" class="waypoint"></span>
+      </div>
+
+      <div class="inner_element" id="area4">
+          <span>場所の名前:</span>
+          <span><input type="text" class="waypoint"></span>
+      </div>
+
+      <div class="inner_element" id="area5">
+        <span>場所の名前:</span>
+        <span><input type="text" class="waypoint"></span>
+      </div>
+
+      <div class="inner_element" id="area6">
+        <span>場所の名前:</span>
+        <span><input type="text" class="waypoint"></span>
+      </div>
+    </div>
+
+    <div class="container">
+      <input type="button" value="場所追加" id="addArea" onClick="plusArea()">
+      <input type="button" value="場所削除" id="deleteArea" onClick="deleteArea()">
+    </div>
+
+    <div class="container">
+      <input type="button" value="計算" id="calculate" onClick="make()">
+    </div>
+
+    <div id="output"></div>
+    <div id="output_length"></div>
+    <div id="output_time"></div>
+
+    <div id="map"></div>
+
+    </body>
+</html>
